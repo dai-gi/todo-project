@@ -1,9 +1,15 @@
 <template>
-  <div id="root">
-    <h1>Todoリスト</h1>
-    <form>
-      <input name="todo">
+  <div>
+    <h1>todoリスト</h1>
+    <form @submit.prevent="addTodo()">
+      <input v-model="todo">
     </form>
+    <ul>
+      <li v-for="(todo, index) in todos" :key="index">
+        {{ todo }}
+        <button @click.prevent="removeTodo(index)">完了</button>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -12,7 +18,17 @@
     name: 'TodoList',
     data() {
       return {
-        todo: ''
+        todo: '',
+        todos: []
+      }
+    },
+    methods: {
+      addTodo(){
+        this.todos.push(this.todo);
+        this.todo = '';
+      },
+      removeTodo(index){
+        this.todos.splice(index, 1);
       }
     }
   }
