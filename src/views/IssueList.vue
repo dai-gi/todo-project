@@ -25,7 +25,7 @@
     headers: {
       'Accept': 'application/vnd.github.v3+json',
       'Content-Type':'application/json',
-      'Authorization': 'token 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0'
+      'Authorization':
     },
   })
 
