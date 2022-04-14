@@ -21,7 +21,7 @@
   import axios from 'axios';
 
   const client = axios.create({
-    baseURL: 'https://api.github.com/repos/dai-gi/todo-project',
+    baseURL: ,
     headers: {
       'Accept': 'application/vnd.github.v3+json',
       'Content-Type':'application/json',
