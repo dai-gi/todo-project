@@ -21,11 +21,11 @@
   import axios from 'axios';
 
   const client = axios.create({
-    baseURL: ,
+    baseURL: `${process.env.VUE_APP_GITHUB_ENDPOINT}`,
     headers: {
       'Accept': 'application/vnd.github.v3+json',
       'Content-Type':'application/json',
-      'Authorization':
+      'Authorization': `token ${prcess.env.VUE_APP_GITHUB_TOKEN}`
     },
   })
 
