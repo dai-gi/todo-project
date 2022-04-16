@@ -3,12 +3,13 @@
     <h1>Issueリスト</h1>
     <el-button type="success" @click="getIssues()">issue取得</el-button>
     <el-row :gutter="12">
-      <el-col :span="12" v-for="issue in issues" :key="issue.id">
+      <el-col :span="12" v-for="(issue, index) in issues" :key="issue.id">
         <el-card class="box-card" shadow="hover" style="margin: 5px 0;">
           <el-row :gutter="12">
             <el-col :span="21">{{ issue.title }}</el-col>
+            <el-col :span="21">{{ issue.state }}</el-col>
             <el-col :span="3">
-              <el-button type="success" icon="el-icon-check" circle></el-button>
+              <el-button @click="closeIssue(index)" type="success" icon="el-icon-check" circle></el-button>
             </el-col>
           </el-row>
         </el-card>
@@ -25,7 +26,7 @@
     headers: {
       'Accept': 'application/vnd.github.v3+json',
       'Content-Type':'application/json',
-      'Authorization': `token ${prcess.env.VUE_APP_GITHUB_TOKEN}`
+      'Authorization': `token ${process.env.VUE_APP_GITHUB_TOKEN}`
     },
   })
 
@@ -42,7 +43,18 @@
           .then((res) => {
             this.issues = res.data;
           })
-      }
+      },
+      closeIssue(index) {
+        const target = this.issues[index]
+        client.patch(`/issues/${target.number}`,
+          {
+            state: 'closed'
+          },
+        )
+        .then(() => {
+          this.issues.splice(index, 1)
+        })
+      },
     }
   }
 </script>
