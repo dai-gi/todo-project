@@ -44,15 +44,17 @@
             this.issues = res.data;
           })
       },
-      closeIssue(index) {
-        const target = this.issues[index]
+      closeIssue(number) {
+        const target = this.issues[number]
         client.patch(`/issues/${target.number}`,
           {
             state: 'closed'
           },
         )
         .then(() => {
-          this.issues.splice(index, 1)
+          this.issues.some((v, i) => {
+            if(v.number == number) this.issues.splice(i, 1);
+          })
         })
       },
     }
