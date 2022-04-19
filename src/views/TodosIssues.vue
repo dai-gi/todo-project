@@ -5,7 +5,7 @@
       <el-input placeholder="todo" v-model="todo"></el-input>
     </form>
     <el-row :gutter="12">
-      <TodoItem v-for="( todo, index ) in todos" :key="index" />
+      <TodoItem v-for="( todo, index ) in todos" :key="index" :todo="todo" @removeTodo="removeTodo(index)" />
       <el-col :span="12" v-for="(issue, index) in issues" :key="issue.id">
         <el-card class="box-card" shadow="hover" style="margin: 5px 0;">
           <el-row :gutter="12">
@@ -26,9 +26,9 @@
   const client = axios.create({
     baseURL: `${process.env.VUE_APP_GITHUB_ENDPOINT}`,
     headers: {
+      'Authorization': `token ${process.env.VUE_APP_GITHUB_TOKEN}`,
       'Accept': 'application/vnd.github.v3+json',
-      'Content-Type':'application/json',
-      'Authorization': `token ${process.env.VUE_APP_GITHUB_TOKEN}`
+      'Content-Type':'application/json'
     },
   })
 
@@ -52,12 +52,6 @@
       removeTodo(index){
         this.todos.splice(index, 1);
       },
-      getIssues() {
-        client.get('/issues')
-          .then((res) => {
-            this.issues = res.data;
-          })
-      },
       closeIssue(index) {
         const target = this.issues[index]
         client.patch(`/issues/${target.number}`,
@@ -69,6 +63,12 @@
           this.issues.splice(index, 1);
         })
       },
+      getIssues() {
+        client.get('/issues')
+          .then((res) => {
+            this.issues = res.data;
+          })
+      }
     },
     created() {
       this.getIssues();
